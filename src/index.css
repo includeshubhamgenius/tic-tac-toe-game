@@ -1,13 +1,25 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.light {
+  background-color: rgb(255, 255, 255);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.neon .neon\:bg-black {
+  background-color: #000000;
+}
+
+.neon .neon\:glow-red {
+  color: red;
+  text-shadow: 0 0 8px red, 0 0 16px red, 0 0 32px red;
+}
+
+.neon .neon\:glow-cyan {
+  color: cyan;
+  text-shadow: 0 0 8px cyan, 0 0 16px cyan, 0 0 32px cyan;
+}
+
+.neon-glow {
+  text-shadow: 0 0 2px #fff, 0 0 5px #08f, 0 0 15px #08f, 0 0 30px #08f;
 }
