@@ -196,7 +196,7 @@ function App() {
   
           {/* Scoreboard */}
           <div
-            className={`flex flex-col rounded-lg p-4 mb-8 border shadow-md ${
+            className={`flex flex-col rounded-lg p-4 sm:mb-8  border shadow-md ${
               theme === "neon"
                 ? "border-cyan-200 border-2 bg-black text-[#08f] shadow-neon"
                 : theme === "dark"
@@ -258,7 +258,7 @@ function App() {
                 className={`absolute ${getWinningLineStyle().className}`}
                 style={{
                   ...getWinningLineStyle(),
-                  className: undefined, // Remove className from the inline style object
+                  className: undefined, // Remove className from inline style
                 }}
               />
             )}
@@ -299,7 +299,7 @@ function App() {
   
           {/* Winner Announcement */}
           <div
-            className={`h-6 text-2xl font-semibold ${
+            className={`h-2 sm:h-6 text-2xl font-semibold ${
               theme === "light"
                 ? "text-red-600"
                 : theme === "dark"
