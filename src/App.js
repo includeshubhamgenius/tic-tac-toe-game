@@ -181,9 +181,9 @@ function App() {
     <div className={`${theme === "neon" ? "neon" : theme}`}>
       <div className="h-screen overflow-hidden flex flex-col justify-between bg-white dark:bg-light-bg neon:bg-black transition-colors">
         {/* Header */}
-        <div className="flex flex-col justify-center items-center mt-4">
+        <div className="flex flex-col justify-center items-center mt-8 sm:mt-4">
           <h1
-            className={`text-4xl font-bold mb-4 ${
+            className={`text-4xl font-bold mb-8 sm:mb-4 ${
               theme === "neon"
                 ? "text-cyan-200 drop-shadow-forO"
                 : theme === "dark"
@@ -196,7 +196,7 @@ function App() {
   
           {/* Scoreboard */}
           <div
-            className={`flex flex-col rounded-lg p-4 sm:mb-8  border shadow-md ${
+            className={`flex flex-col rounded-lg p-4 mb-2 sm:mb-8  border shadow-md ${
               theme === "neon"
                 ? "border-cyan-200 border-2 bg-black text-[#08f] shadow-neon"
                 : theme === "dark"
@@ -251,7 +251,7 @@ function App() {
   
         {/* Game Board */}
         <div className="flex flex-col items-center">
-          <div className="relative w-64 h-64 mb-4">
+          <div className="relative w-64 h-64 mb-8 sm:mb-4">
             {/* Winning Line */}
             {winningLine && (
               <div
