@@ -9,6 +9,10 @@
 .neon .neon\:bg-black {
   background-color: #000000;
 }
+.text-shadow-text {
+  text-shadow: 0 0 10px rgb(255, 0, 0, 1) ;
+}
+
 
 .neon .neon\:glow-red {
   color: red;

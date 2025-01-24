@@ -8,6 +8,8 @@ function App() {
   const [score, setScore] = useState({ X: 0, O: 0, Draws: 0 });
   const [theme, setTheme] = useState("light");
   const [winningLine, setWinningLine] = useState(null);
+  const [announcement, setAnnouncement] = useState(""); // New state for announcement
+
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -24,28 +26,32 @@ function App() {
 
   const handleClick = (index) => {
     if (board[index] || winner) return;
-
+  
     const newBoard = [...board];
     newBoard[index] = xIsNext ? "X" : "O";
     setBoard(newBoard);
     setXIsNext(!xIsNext);
-
+  
     const winResult = calculateWinner(newBoard);
     if (winResult) {
       setWinningLine(winResult.line);
       const newScore = { ...score };
       newScore[xIsNext ? "X" : "O"] += 1;
       setScore(newScore);
+      setAnnouncement(`${xIsNext ? "X" : "O"} Wins!`); // Set winner announcement
     } else if (newBoard.every((cell) => cell)) {
       setWinningLine(null);
       setScore((prev) => ({ ...prev, Draws: prev.Draws + 1 }));
+      setAnnouncement("It's a Draw!"); // Set draw announcement
     }
   };
+  
 
   const handleReset = () => {
     setBoard(Array(9).fill(null));
     setXIsNext(true);
     setWinningLine(null);
+    setAnnouncement("");
   };
 
   const toggleTheme = () => {
@@ -171,141 +177,159 @@ function App() {
   
   
 
-  return (     <div className={`${theme === "neon" ? "neon" : theme}`}>
-    <div className="h-screen flex flex-col justify-center items-center bg-white dark:bg-light-bg neon:bg-black transition-colors">
-      <h1
-        className={`text-4xl font-bold mb-4 ${
-          theme === "neon"
-            ? "text-cyan-200 drop-shadow-forO"
-            : theme === "dark"
-            ? "text-gray-400"
-            : "text-black"
-        }`}
-      >
-        Tic-Tac-Toe
-      </h1>
-
-      {/* Scoreboard */}
-      <div
-        className={`flex flex-col rounded-lg p-4 mb-6 border shadow-md ${
-          theme === "neon"
-            ? "border-cyan-200 border-2 bg-black text-[#08f] shadow-neon"
-            : theme === "dark"
-            ? "border-gray-700 bg-gray-800 text-gray-200"
-            : "border-gray-300 text-gray-800"
-        }`}
-      >
-        <div className="flex justify-between items-center text-lg mb-2 px-8">
-          <RxCross2
-            size={32}
-            className={
-              theme === "light"
-                ? "text-[#378ccd] drop-shadow-custom"
-                : getClassForIcon("X")
-            }
-          />
-          <FaRegCircle
-            size={26}
-            className={
-              theme === "light"
-                ? "text-[#34bdd7] drop-shadow-custom"
-                : getClassForIcon("O")
-            }
-          />
-          <FaBalanceScale size={28} className="text-gray-500" />
-        </div>
-        <div className="flex justify-between items-center text-sm font-medium px-6 space-x-10 h-1">
-          <div className="flex items-center gap-2">
-            <span
-              className={
-                theme === "light" ? "text-[#378ccd]" : getClassForIcon("X")
-              }
-            >
-              {score.X} Wins
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span
-              className={
-                theme === "light" ? "text-[#34bdd7]" : getClassForIcon("O")
-              }
-            >
-              {score.O} Wins
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500">{score.Draws} Draws</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Game Board */}
-      <div className="relative w-64 h-64">
-        {/* Winning Line */}
-        {/* Winning Line */}
-{winningLine && (
-  <div
-    className={`absolute ${getWinningLineStyle().className}`}
-    style={{
-      ...getWinningLineStyle(),
-      className: undefined, // Remove className from the inline style object
-    }}
-  />
-)}
-
-
-        {/* Horizontal Lines */}
-        <div
-          className={`absolute top-1/3 w-full h-0.5 ${gridLineStyle[theme]}`}
-        ></div>
-        <div
-          className={`absolute top-2/3 w-full h-0.5 ${gridLineStyle[theme]}`}
-        ></div>
-
-        {/* Vertical Lines */}
-        <div
-          className={`absolute left-1/3 h-full w-0.5 ${gridLineStyle[theme]}`}
-        ></div>
-        <div
-          className={`absolute left-2/3 h-full w-0.5 ${gridLineStyle[theme]}`}
-        ></div>
-
-        <div className="grid grid-cols-3 grid-rows-3 w-full h-full">
-          {board.map((value, index) => (
-            <div
-              key={index}
-              className="flex justify-center items-center"
-              onClick={() => handleClick(index)}
-            >
-              {value === "X" && (
-                <RxCross2 size={80} className={getClassForIcon(value)} />
-              )}
-              {value === "O" && (
-                <FaRegCircle size={60} className={getClassForIcon(value)} />
-              )}
+  return (
+    <div className={`${theme === "neon" ? "neon" : theme}`}>
+      <div className="h-screen flex flex-col justify-between bg-white dark:bg-light-bg neon:bg-black transition-colors">
+        {/* Header */}
+        <div className="flex flex-col justify-center items-center mt-4">
+          <h1
+            className={`text-4xl font-bold mb-4 ${
+              theme === "neon"
+                ? "text-cyan-200 drop-shadow-forO"
+                : theme === "dark"
+                ? "text-gray-400"
+                : "text-black"
+            }`}
+          >
+            Tic-Tac-Toe
+          </h1>
+  
+          {/* Scoreboard */}
+          <div
+            className={`flex flex-col rounded-lg p-4 mb-8 border shadow-md ${
+              theme === "neon"
+                ? "border-cyan-200 border-2 bg-black text-[#08f] shadow-neon"
+                : theme === "dark"
+                ? "border-gray-700 bg-gray-800 text-gray-200"
+                : "border-gray-300 text-gray-800"
+            }`}
+          >
+            <div className="flex justify-between items-center text-lg mb-2 px-8">
+              <RxCross2
+                size={32}
+                className={
+                  theme === "light"
+                    ? "text-[#378ccd] drop-shadow-custom"
+                    : getClassForIcon("X")
+                }
+              />
+              <FaRegCircle
+                size={26}
+                className={
+                  theme === "light"
+                    ? "text-[#34bdd7] drop-shadow-custom"
+                    : getClassForIcon("O")
+                }
+              />
+              <FaBalanceScale size={28} className="text-gray-500" />
             </div>
-          ))}
+            <div className="flex justify-between items-center text-sm font-medium px-6 space-x-10 h-1">
+              <div className="flex items-center gap-2">
+                <span
+                  className={
+                    theme === "light" ? "text-[#378ccd]" : getClassForIcon("X")
+                  }
+                >
+                  {score.X} Wins
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span
+                  className={
+                    theme === "light" ? "text-[#34bdd7]" : getClassForIcon("O")
+                  }
+                >
+                  {score.O} Wins
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-gray-500">{score.Draws} Draws</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      {/* Buttons */}
-      <div className="mt-6 flex gap-4">
-        <button
-          onClick={handleReset}
-          className={`px-4 py-2 rounded-lg shadow-md transform transition-transform hover:scale-105 ${buttonStyle[theme].reset}`}
-        >
-          Reset Board
-        </button>
-        <button
-          onClick={toggleTheme}
-          className={`px-4 py-2 rounded-lg shadow-md transform transition-transform hover:scale-105 ${buttonStyle[theme].toggle}`}
-        >
-          Toggle Theme ({theme})
-        </button>
+  
+        {/* Game Board */}
+        <div className="flex flex-col items-center">
+          <div className="relative w-64 h-64 mb-6">
+            {/* Winning Line */}
+            {winningLine && (
+              <div
+                className={`absolute ${getWinningLineStyle().className}`}
+                style={{
+                  ...getWinningLineStyle(),
+                  className: undefined, // Remove className from the inline style object
+                }}
+              />
+            )}
+  
+            {/* Horizontal Lines */}
+            <div
+              className={`absolute top-1/3 w-full h-0.5 ${gridLineStyle[theme]}`}
+            ></div>
+            <div
+              className={`absolute top-2/3 w-full h-0.5 ${gridLineStyle[theme]}`}
+            ></div>
+  
+            {/* Vertical Lines */}
+            <div
+              className={`absolute left-1/3 h-full w-0.5 ${gridLineStyle[theme]}`}
+            ></div>
+            <div
+              className={`absolute left-2/3 h-full w-0.5 ${gridLineStyle[theme]}`}
+            ></div>
+  
+            <div className="grid grid-cols-3 grid-rows-3 w-full h-full">
+              {board.map((value, index) => (
+                <div
+                  key={index}
+                  className="flex justify-center items-center"
+                  onClick={() => handleClick(index)}
+                >
+                  {value === "X" && (
+                    <RxCross2 size={80} className={getClassForIcon(value)} />
+                  )}
+                  {value === "O" && (
+                    <FaRegCircle size={60} className={getClassForIcon(value)} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+  
+          {/* Winner Announcement */}
+          <div
+            className={`h-8 text-2xl font-semibold ${
+              theme === "light"
+                ? "text-red-600"
+                : theme === "dark"
+                ? "text-red-700"
+                : "text-red-300 text-shadow-text"
+            }`}
+          >
+            {announcement}
+          </div>
+        </div>
+  
+        {/* Buttons at the Bottom */}
+        <div className="mt-0 flex justify-center gap-4 p-6">
+          <button
+            onClick={handleReset}
+            className={`px-4 py-2 rounded-lg shadow-md transform transition-transform hover:scale-105 ${buttonStyle[theme].reset}`}
+          >
+            Reset Board
+          </button>
+          <button
+            onClick={toggleTheme}
+            className={`px-4 py-2 rounded-lg shadow-md transform transition-transform hover:scale-105 ${buttonStyle[theme].toggle}`}
+          >
+            Toggle Theme ({theme})
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+  
 }
 
 function calculateWinner(board) {
