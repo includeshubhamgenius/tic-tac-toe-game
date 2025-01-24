@@ -179,7 +179,7 @@ function App() {
 
   return (
     <div className={`${theme === "neon" ? "neon" : theme}`}>
-      <div className="h-screen flex flex-col justify-between bg-white dark:bg-light-bg neon:bg-black transition-colors">
+      <div className="h-screen overflow-hidden flex flex-col justify-between bg-white dark:bg-light-bg neon:bg-black transition-colors">
         {/* Header */}
         <div className="flex flex-col justify-center items-center mt-4">
           <h1
@@ -251,7 +251,7 @@ function App() {
   
         {/* Game Board */}
         <div className="flex flex-col items-center">
-          <div className="relative w-64 h-64 mb-6">
+          <div className="relative w-64 h-64 mb-4">
             {/* Winning Line */}
             {winningLine && (
               <div
@@ -299,7 +299,7 @@ function App() {
   
           {/* Winner Announcement */}
           <div
-            className={`h-8 text-2xl font-semibold ${
+            className={`h-6 text-2xl font-semibold ${
               theme === "light"
                 ? "text-red-600"
                 : theme === "dark"
